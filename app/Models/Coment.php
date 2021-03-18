@@ -6,15 +6,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Words extends Model
+class Coment extends Model
 {
-    protected $table = 'words';
+    protected $table = 'coment';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'words'
+        'coment'
     ];
 }

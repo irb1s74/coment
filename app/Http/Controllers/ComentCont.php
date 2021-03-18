@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Word;
 use App\Models\Later;
+
 use Illuminate\Http\Request;
 
 class ComentCont extends Controller
@@ -24,6 +25,7 @@ class ComentCont extends Controller
 
         $str_arr = array();
         for ($i = 0; $i <= strlen($string) - 1; $i++) {
+
             $leters = Later::where('lat', $string[$i])->first();
             if (!$leters) {
                 $leter = new Later;
