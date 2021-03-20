@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Word;
 use App\Models\Later;
+use App\Models\Coment;
 
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class ComentCont extends Controller
         $string = $request->input('text');
         $resp_word = [];
         $resp_leter = [];
+        $resp_id = '';
 
         $string = mb_substr($string, 0, null, 'utf-8');
         mb_regex_encoding('UTF-8');
@@ -31,6 +33,18 @@ class ComentCont extends Controller
 
         $string = trim($string);
         $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+
+        $coments = Coment::where('coment', $string)->first();
+        if (!$coments) {
+            $coment = new Coment;
+            $coment->coment = $string;
+            $coment->save();
+            $resp_id = $coment->id;
+        } else {
+            $resp_id = $coments->id;
+        }
+
+
         for ($i = 0; $i <= count($string_let) - 1; $i++) {
             $test = mb_substr($string_let[$i], 0, null, 'utf-8');
 
@@ -59,12 +73,50 @@ class ComentCont extends Controller
         }
 
         $response = array(
-            'leter' => $resp_leter,
-            'word' => $resp_word
+            'id' => $resp_id,
+            'key_letters' => $resp_leter,
+            'key_words' => $resp_word
         );
 
         return response()->json($response, 200);
     }
 
     //
+
+    public function one($id)
+    {
+        $coment = Coment::find($id);
+        $string = $coment->coment;
+        $resp_word = [];
+        $resp_leter = [];
+        $response = array(
+            'id' => $coment->id,
+            'сomment' => $coment->coment,
+            'key_letters' => $resp_leter,
+            'key_words' => $resp_word
+        );
+
+        $string = mb_substr($string, 0, null, 'utf-8');
+        mb_regex_encoding('UTF-8');
+        mb_internal_encoding("UTF-8");
+
+        $string = trim($string);
+        $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+        for ($i = 0; $i <= count($string_let) - 1; $i++) {
+            $test = mb_substr($string_let[$i], 0, null, 'utf-8');
+            $leters = Later::where('lat', $test)->first();
+            if ($leters) {
+                array_push($resp_leter, $leters->id);
+            }
+        }
+        $matches = explode(' ', $string);
+        foreach ($matches as $wor) {
+            $words = Word::where('word', $wor)->first();
+            if ($words) {
+                array_push($resp_word, $words->id);
+            }
+        }
+
+        return response()->json($response, 200);
+    }
 }
