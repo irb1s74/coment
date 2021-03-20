@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "48789c2d-8c5b-47d0-a79d-b907b63dc69b",
+		"_postman_id": "8a939c6c-7f78-4a3e-94af-211f0594a2f1",
 		"name": "post",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "COMENTS",
+			"name": "coment",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -21,12 +21,12 @@
 					]
 				},
 				"url": {
-					"raw": "{{server}}/post",
+					"raw": "{{server}}/comment",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"post"
+						"comment"
 					]
 				}
 			},
@@ -38,12 +38,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/one/1",
+					"raw": "{{server}}/comment/1",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"one",
+						"comment",
 						"1"
 					]
 				}
@@ -56,12 +56,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/all",
+					"raw": "{{server}}/comments",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"all"
+						"comments"
 					]
 				}
 			},
@@ -73,12 +73,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/del/1",
+					"raw": "{{server}}/delete/1",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"del",
+						"delete",
 						"1"
 					]
 				}
@@ -90,7 +90,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "0212484b-caf9-4f9f-a5cc-29a225aa6530",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -100,7 +99,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "c11ceaa7-daec-4a6e-ab08-4858990731ac",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -110,10 +108,8 @@
 	],
 	"variable": [
 		{
-			"id": "43d294b6-cd0f-4c2d-bd09-46d16b43ff24",
 			"key": "server",
-			"value": "http://localhost/public/api/coment"
+			"value": "http://coment/public/api"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -17,9 +17,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'api/comment'], function () use ($router) {
-    $router->post('post', 'ComentCont@post');
-    $router->get('one/{id}', 'ComentCont@one');
-    $router->get('get_all', 'ComentCont@all');
-    $router->delete('del/{id}', 'ComentCont@del');
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->post('comment', 'ComentCont@post');
+    $router->get('comment/{id}', 'ComentCont@one');
+    $router->get('comments', 'ComentCont@all');
+    $router->delete('delete/{id}', 'ComentCont@del');
 });

@@ -74,8 +74,8 @@ class ComentCont extends Controller
 
         $response = array(
             'id' => $resp_id,
-            'key_letters' => $resp_leter,
-            'key_words' => $resp_word
+            'key_letters' => implode(',', $resp_leter),
+            'key_words' => implode(',', $resp_word)
         );
 
         return response()->json($response, 200);
@@ -89,12 +89,6 @@ class ComentCont extends Controller
         $string = $coment->coment;
         $resp_word = [];
         $resp_leter = [];
-        $response = array(
-            'id' => $coment->id,
-            'сomment' => $coment->coment,
-            'key_letters' => $resp_leter,
-            'key_words' => $resp_word
-        );
 
         $string = mb_substr($string, 0, null, 'utf-8');
         mb_regex_encoding('UTF-8');
@@ -102,6 +96,7 @@ class ComentCont extends Controller
 
         $string = trim($string);
         $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+
         for ($i = 0; $i <= count($string_let) - 1; $i++) {
             $test = mb_substr($string_let[$i], 0, null, 'utf-8');
             $leters = Later::where('lat', $test)->first();
@@ -116,7 +111,60 @@ class ComentCont extends Controller
                 array_push($resp_word, $words->id);
             }
         }
-
+        $response = array(
+            'id' => $coment->id,
+            'сomment' => $coment->coment,
+            'key_letters' => implode(',', $resp_leter),
+            'key_words' => implode(',', $resp_word),
+        );
         return response()->json($response, 200);
+    }
+
+    public function del($id)
+    {
+        if ($com = Coment::find($id)) {
+            $com->delete();
+        }
+    }
+
+    public function all()
+    {
+        $coments = Coment::all();
+        $resp_arr = [];
+        foreach ($coments as $com) {
+            $string = $com->coment;
+            $resp_word = [];
+            $resp_leter = [];
+
+            $string = mb_substr($string, 0, null, 'utf-8');
+            mb_regex_encoding('UTF-8');
+            mb_internal_encoding("UTF-8");
+
+            $string = trim($string);
+            $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+
+            for ($i = 0; $i <= count($string_let) - 1; $i++) {
+                $test = mb_substr($string_let[$i], 0, null, 'utf-8');
+                $leters = Later::where('lat', $test)->first();
+                if ($leters) {
+                    array_push($resp_leter, $leters->id);
+                }
+            }
+            $matches = explode(' ', $string);
+            foreach ($matches as $wor) {
+                $words = Word::where('word', $wor)->first();
+                if ($words) {
+                    array_push($resp_word, $words->id);
+                }
+            }
+            $response = array(
+                'id' => $com->id,
+                'сomment' => $com->coment,
+                'key_letters' => implode(',', $resp_leter),
+                'key_words' => implode(',', $resp_word),
+            );
+            array_push($resp_arr, $response);
+        }
+        return response()->json($resp_arr, 200);
     }
 }
