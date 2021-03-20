@@ -26,9 +26,10 @@ class ComentCont extends Controller
         $resp_leter = [];
 
         $string = mb_substr($string, 0, null, 'utf-8');
-
         mb_regex_encoding('UTF-8');
         mb_internal_encoding("UTF-8");
+
+        $string = trim($string);
         $string_let = preg_split('/(?<!^)(?!$)/u', $string);
         for ($i = 0; $i <= count($string_let) - 1; $i++) {
             $test = mb_substr($string_let[$i], 0, null, 'utf-8');
@@ -57,9 +58,12 @@ class ComentCont extends Controller
             }
         }
 
+        $response = array(
+            'leter' => $resp_leter,
+            'word' => $resp_word
+        );
 
-
-        return response()->json(array($resp_leter, $resp_word), 200);
+        return response()->json($response, 200);
     }
 
     //
