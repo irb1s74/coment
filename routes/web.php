@@ -18,3 +18,4 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('post', 'ComentCont@post');
+$router->post('test', 'TestCont@test');

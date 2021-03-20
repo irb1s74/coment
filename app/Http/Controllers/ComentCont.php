@@ -22,17 +22,26 @@ class ComentCont extends Controller
     public function post(Request $request)
     {
         $string = $request->input('text');
+        $resp_word = [];
+        $resp_leter = [];
 
-        $str_arr = array();
-        for ($i = 0; $i <= strlen($string) - 1; $i++) {
+        $string = mb_substr($string, 0, null, 'utf-8');
 
-            $leters = Later::where('lat', $string[$i])->first();
+        mb_regex_encoding('UTF-8');
+        mb_internal_encoding("UTF-8");
+        $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+        for ($i = 0; $i <= count($string_let) - 1; $i++) {
+            $test = mb_substr($string_let[$i], 0, null, 'utf-8');
+
+            $leters = Later::where('lat', $test)->first();
             if (!$leters) {
                 $leter = new Later;
-                $leter->lat = $string[$i];
+                $leter->lat = $test;
                 $leter->save();
+                array_push($resp_leter, $leter->id);
+            } else {
+                array_push($resp_leter, $leters->id);
             }
-            array_push($str_arr, $string[$i]);
         }
 
         $matches = explode(' ', $string);
@@ -42,9 +51,15 @@ class ComentCont extends Controller
                 $word = new Word;
                 $word->word = $wor;
                 $word->save();
+                array_push($resp_word, $word->id);
+            } else {
+                array_push($resp_word, $words->id);
             }
         }
-        return response()->json(Word::all(), 200);
+
+
+
+        return response()->json(array($resp_leter, $resp_word), 200);
     }
 
     //
