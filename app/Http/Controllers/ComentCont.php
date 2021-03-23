@@ -160,7 +160,7 @@ class ComentCont extends Controller
             $response = array(
                 'id' => $com->id,
                 'сomment' => $com->coment,
-                'key_letters' => implode(',', $resp_leter),
+                'key_letters' => implode(', ', $resp_leter),
                 'key_words' => implode(',', $resp_word),
             );
             array_push($resp_arr, $response);
