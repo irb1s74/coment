@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- Compiled and minified CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        />
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+            body {
+                background-color: #ffebee;
+            }
+            .over {
+                width: 100%;
+                overflow: hidden; /* Обрезаем содержимое */
+                padding: 5px; /* Поля */
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <nav>
+                <div class="nav-wrapper">
+                    <a @click="switch_child('this_all_com')" class="brand-logo"
+                        >Coment</a
+                    >
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li>
+                            <a @click="switch_child('new_com')">Создать</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container">
+                <component :is="navig" :data="all_com"></component>
+            </div>
+        </div>
+    </body>
+    <script src="main.js"></script>
 </html>
