@@ -11,17 +11,31 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
         />
-
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <style>
             body {
-                background-color: #ffebee;
+                background-color: #eceff1;
             }
             .over {
                 width: 100%;
-                overflow: hidden; /* Обрезаем содержимое */
-                padding: 5px; /* Поля */
+                overflow: hidden;
+                margin-bottom: 1rem;
+            }
+            .flex {
+                display: flex;
+                flex-direction: column;
+                align-items: left;
+            }
+            .my_input {
+                padding: 0.5rem 1rem;
+                margin: auto;
+                margin-top: 1rem;
+                border: 2px solid #ee6e73;
+                outline: none;
+            }
+            .my_input:focus {
+                border: 2px solid #009688;
             }
         </style>
     </head>
@@ -33,6 +47,9 @@
                         >Coment</a
                     >
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li>
+                            <a @click="switch_child('found')">Найти</a>
+                        </li>
                         <li>
                             <a @click="switch_child('new_com')">Создать</a>
                         </li>

@@ -14,24 +14,20 @@ var app = new Vue({
               v-for="(com, index) in data"
               :key="index"
             >
-
-            
                 <div class="my-cont">
                 <div class="col s12 m5">
                     <div class="card-panel teal">
-                    <span class="card-title">Comment id: {{com.id}}</span>
+                    <h5 class="card-title">Comment id: {{com.id}}</h5>
                     <br>
-                    <span class="white-text">text: {{com.сomment}}
-                    <br>
-                    </span>
-                    <span class="white-text over">KEY WORDS: {{com.key_words}}
-                    </span>
-                    <br>
-                    <span class="white-text over">key letters: {{com.key_letters}}
-                    </span>
-                    <br>
-                    <button class="btn waves-effect waves-light red" type="submit" @click="del(index)">delete</button>   
-
+                    <div class="flex">
+                        <span class="white-text over">TEXT: {{com.сomment}}
+                        </span>
+                        <span class="white-text over"> WORDS: {{com.key_words}}
+                        </span>
+                        <span class="white-text over"> LETTERS: {{com.key_letters}}
+                        </span>
+                    </div>
+                        <button class="btn waves-effect waves-light red" type="submit" @click="del(index)">delete</button>   
                     </div>
                 </div>
                 </div>
@@ -67,7 +63,7 @@ var app = new Vue({
             },
             template: `
                 <div>
-                    <h2>Добавить</h2>
+                    <h2>Создать</h2>
                     <hr/>
                     <textarea
                     v-model="text_com"
@@ -91,17 +87,56 @@ var app = new Vue({
                 }
             }
 
+        },
+        found: {
+            template: `
+            <div>
+            <input class="my_input" v-model="com_id" placeholder="id" type="number" min="0">
+            <div
+              v-for="(com, index) in data"
+              :key="index"
+            >
+                <div v-if="com.id == com_id" class="my-cont">
+                <div class="col s12 m5">
+                    <div class="card-panel teal">
+                    <h5 class="card-title">Comment id: {{com.id}}</h5>
+                    <br>
+                    <div class="flex">
+                        <span class="white-text over">TEXT: {{com.сomment}}
+                        </span>
+                        <span class="white-text over"> WORDS: {{com.key_words}}
+                        </span>
+                        <span class="white-text over"> LETTERS: {{com.key_letters}}
+                        </span>
+                    </div>
+                        <button class="btn waves-effect waves-light red" type="submit" @click="del(index)">delete</button>   
+                    </div>
+                </div>
+                </div>
+                </div>
+                </div>
+
+            `,
+            data() {
+                return {
+                    com_id: ''
+                }
+            },
+            props: {
+                data: {
+                    type: Array,
+                    default () {
+                        return [];
+                    },
+                }
+            },
+
         }
     },
     methods: {
         all: function () {
-            // let formData = {
-            //     'phone': this.phone,
-            //     'password': this.password
-            // }
             const requestOptions = {
                 method: "GET"
-                // body: formData
             };
             fetch("http://coment/public/api/comments", requestOptions)
                 .then((response) => response.json())
