@@ -83,41 +83,45 @@ class ComentCont extends Controller
 
     //
 
-    public function one($id)
+    public function one(Request $request)
     {
-        $coment = Coment::find($id);
-        $string = $coment->coment;
-        $resp_word = [];
-        $resp_leter = [];
+        $coment = Coment::where('coment', 'like', '%' . $request->input('text') . '%')->first();
+        if ($coment) {
 
-        $string = mb_substr($string, 0, null, 'utf-8');
-        mb_regex_encoding('UTF-8');
-        mb_internal_encoding("UTF-8");
 
-        $string = trim($string);
-        $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+            $string = $coment->coment;
+            $resp_word = [];
+            $resp_leter = [];
 
-        for ($i = 0; $i <= count($string_let) - 1; $i++) {
-            $test = mb_substr($string_let[$i], 0, null, 'utf-8');
-            $leters = Later::where('lat', $test)->first();
-            if ($leters) {
-                array_push($resp_leter, $leters->id);
+            $string = mb_substr($string, 0, null, 'utf-8');
+            mb_regex_encoding('UTF-8');
+            mb_internal_encoding("UTF-8");
+
+            $string = trim($string);
+            $string_let = preg_split('/(?<!^)(?!$)/u', $string);
+
+            for ($i = 0; $i <= count($string_let) - 1; $i++) {
+                $test = mb_substr($string_let[$i], 0, null, 'utf-8');
+                $leters = Later::where('lat', $test)->first();
+                if ($leters) {
+                    array_push($resp_leter, $leters->id);
+                }
             }
-        }
-        $matches = explode(' ', $string);
-        foreach ($matches as $wor) {
-            $words = Word::where('word', $wor)->first();
-            if ($words) {
-                array_push($resp_word, $words->id);
+            $matches = explode(' ', $string);
+            foreach ($matches as $wor) {
+                $words = Word::where('word', $wor)->first();
+                if ($words) {
+                    array_push($resp_word, $words->id);
+                }
             }
+            $response = array(
+                'id' => $coment->id,
+                'сomment' => $coment->coment,
+                'key_letters' => implode(',', $resp_leter),
+                'key_words' => implode(',', $resp_word),
+            );
+            return response()->json($response, 200);
         }
-        $response = array(
-            'id' => $coment->id,
-            'сomment' => $coment->coment,
-            'key_letters' => implode(',', $resp_leter),
-            'key_words' => implode(',', $resp_word),
-        );
-        return response()->json($response, 200);
     }
 
     public function del($id)

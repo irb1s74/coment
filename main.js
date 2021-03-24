@@ -91,22 +91,19 @@ var app = new Vue({
         found: {
             template: `
             <div>
-            <input class="my_input" v-model="com_id" placeholder="id" type="number" min="0">
-            <div
-              v-for="(com, index) in data"
-              :key="index"
-            >
-                <div v-if="com.id == com_id" class="my-cont">
+            <input @keypress.enter="get_com" class="my_input" v-model="com_text" placeholder="text" type="text">
+            <div v-if="found_com.length !== 0">
+                <div class="my-cont">
                 <div class="col s12 m5">
                     <div class="card-panel teal">
-                    <h5 class="card-title">Comment id: {{com.id}}</h5>
+                    <h5 class="card-title">Comment id: {{found_com.id}}</h5>
                     <br>
                     <div class="flex">
-                        <span class="white-text over">TEXT: {{com.сomment}}
+                        <span class="white-text over">TEXT: {{found_com.сomment}}
                         </span>
-                        <span class="white-text over"> WORDS: {{com.key_words}}
+                        <span class="white-text over"> WORDS: {{found_com.key_words}}
                         </span>
-                        <span class="white-text over"> LETTERS: {{com.key_letters}}
+                        <span class="white-text over"> LETTERS: {{found_com.key_letters}}
                         </span>
                     </div>
                         <button class="btn waves-effect waves-light red" type="submit" @click="del(index)">delete</button>   
@@ -114,22 +111,36 @@ var app = new Vue({
                 </div>
                 </div>
                 </div>
+                <div v-if='nof'>
+                    <h5>Ничего не найдено <h5>
+                </div>
                 </div>
 
             `,
             data() {
                 return {
-                    com_id: ''
+                    com_text: '',
+                    found_com: [],
+                    nof: false
                 }
             },
-            props: {
-                data: {
-                    type: Array,
-                    default () {
-                        return [];
-                    },
+            methods: {
+                get_com() {
+                    this.found_com = [];
+                    var formData = new FormData();
+                    formData.append("text", this.com_text);
+                    axios
+                        .post("/public/api/comment/find", formData)
+                        .then((response) => {
+                            if (response.data) {
+                                this.nof = false
+                                this.found_com = response.data;
+                            } else {
+                                this.nof = true
+                            }
+                        });
                 }
-            },
+            }
 
         }
     },
@@ -138,10 +149,11 @@ var app = new Vue({
             const requestOptions = {
                 method: "GET"
             };
-            fetch("http://coment/public/api/comments", requestOptions)
+            fetch("/public/api/comments", requestOptions)
                 .then((response) => response.json())
                 .then(data => {
-                    this.all_com = data
+                    let res = data.sort((a, b) => b.id - a.id);
+                    this.all_com = res
                 });
         },
         switch_child(nav) {

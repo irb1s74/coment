@@ -19,7 +19,7 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('comment', 'ComentCont@post');
-    $router->get('comment/{id}', 'ComentCont@one');
+    $router->post('comment/find', 'ComentCont@one');
     $router->get('comments', 'ComentCont@all');
     $router->delete('delete/{id}', 'ComentCont@del');
 });
