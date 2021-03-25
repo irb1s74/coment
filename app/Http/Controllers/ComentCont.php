@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Word;
 use App\Models\Later;
 use App\Models\Coment;
@@ -85,7 +84,7 @@ class ComentCont extends Controller
 
     public function one(Request $request)
     {
-        $coment = Coment::where('coment', 'like', '%' . $request->input('text') . '%')->first();
+        $coment = Coment::where('coment', 'LIKE', '%' . $request->input('text') . '%')->first();
         if ($coment) {
 
 
