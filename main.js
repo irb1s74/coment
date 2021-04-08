@@ -1,9 +1,9 @@
 var app = new Vue({
     data() {
         return {
-            navig: 'this_all_com',
-            all_com: []
-        }
+            navig: "this_all_com",
+            all_com: [],
+        };
     },
 
     components: {
@@ -38,28 +38,31 @@ var app = new Vue({
             props: {
                 data: {
                     type: Array,
-                    default () {
+                    default() {
                         return [];
                     },
-                }
+                },
             },
             methods: {
                 del(index) {
                     const requestOptions = {
-                        method: "DELETE"
+                        method: "DELETE",
                         // body: formData
                     };
-                    fetch("http://coment/public/api/delete/" + this.data[index].id, requestOptions)
-                        .then((response) => response.json())
-                    location.reload()
-                }
+                    fetch(
+                        "http://coment/public/api/delete/" +
+                            this.data[index].id,
+                        requestOptions
+                    ).then((response) => response.json());
+                    location.reload();
+                },
             },
         },
         new_com: {
             data() {
                 return {
-                    text_com: ''
-                }
+                    text_com: "",
+                };
             },
             template: `
                 <div>
@@ -84,9 +87,8 @@ var app = new Vue({
                                 location.reload();
                             }
                         });
-                }
-            }
-
+                },
+            },
         },
         found: {
             template: `
@@ -112,17 +114,17 @@ var app = new Vue({
                 </div>
                 </div>
                 <div v-if='nof'>
-                    <h5>Ничего не найдено <h5>
+                    <h5>Ничего не найдено </h5>
                 </div>
                 </div>
 
             `,
             data() {
                 return {
-                    com_text: '',
+                    com_text: "",
                     found_com: [],
-                    nof: false
-                }
+                    nof: false,
+                };
             },
             methods: {
                 get_com() {
@@ -133,37 +135,45 @@ var app = new Vue({
                         .post("/public/api/comment/find", formData)
                         .then((response) => {
                             if (response.data) {
-                                this.nof = false
+                                this.nof = false;
                                 this.found_com = response.data;
                             } else {
-                                this.nof = true
+                                this.nof = true;
                             }
                         });
-                }
-            }
-
-        }
+                },
+                del(index) {
+                    const requestOptions = {
+                        method: "DELETE",
+                        // body: formData
+                    };
+                    fetch(
+                        "http://coment/public/api/delete/" +
+                            this.data.idindex,
+                        requestOptions
+                    ).then((response) => response.json());
+                    location.reload();
+                },
+            },
+        },
     },
     methods: {
         all: function () {
             const requestOptions = {
-                method: "GET"
+                method: "GET",
             };
             fetch("/public/api/comments", requestOptions)
                 .then((response) => response.json())
-                .then(data => {
+                .then((data) => {
                     let res = data.sort((a, b) => b.id - a.id);
-                    this.all_com = res
+                    this.all_com = res;
                 });
         },
         switch_child(nav) {
             this.navig = nav;
-        }
-
+        },
     },
     created() {
         this.all();
-    }
-
-
-}).$mount('#app');
+    },
+}).$mount("#app");
